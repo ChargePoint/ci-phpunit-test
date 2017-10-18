@@ -5,3 +5,5 @@
 /application/tests/_ci_phpunit_test/patcher/debug.log
 
 .idea/
+vendor/
+composer.lock
