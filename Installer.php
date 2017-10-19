@@ -23,10 +23,21 @@ class Installer
 
     public function install($app = 'application')
     {
-        $this->recursiveCopy(
-            dirname(__FILE__) . '/application/tests',
-            $this->base_dir . '/' . static::TEST_FOLDER
+        $this->copyFile(
+            dirname(__FILE__) . '/application/tests/Bootstrap.php',
+            $this->base_dir . '/' . static::TEST_FOLDER . DIRECTORY_SEPARATOR . 'Bootstrap.php'
         );
+
+        $this->copyFile(
+            dirname(__FILE__) . '/application/tests/phpunit.xml',
+            $this->base_dir . '/' . static::TEST_FOLDER . DIRECTORY_SEPARATOR . 'phpunit.xml'
+        );
+
+        $this->recursiveCopy(
+            dirname(__FILE__) . '/application/tests/mocks',
+            $this->base_dir . '/' . static::TEST_FOLDER . DIRECTORY_SEPARATOR . 'mocks'
+        );
+
         $this->fixPath($app);
     }
 
@@ -42,7 +53,7 @@ class Installer
             if (file_exists($this->base_dir . 'vendor/codeigniter/framework/system')) {
                 $contents = str_replace(
                     '$system_path = \'../../system\';',
-                    '$system_path = \'../../vendor/codeigniter/framework/system\';',
+                    '$system_path = \'../vendor/codeigniter/framework/system\';',
                     $contents
                 );
             } else {
@@ -92,16 +103,6 @@ class Installer
         file_put_contents($file, $contents);
     }
 
-    public function update()
-    {
-        $target_dir = $this->base_dir . '/' . static::TEST_FOLDER . '/_ci_phpunit_test';
-        $this->recursiveUnlink($target_dir);
-        $this->recursiveCopy(
-            dirname(__FILE__) . '/application/tests/_ci_phpunit_test',
-            $target_dir
-        );
-    }
-
     /**
      * Recursive Copy
      *
@@ -121,12 +122,7 @@ class Installer
             if ($file->isDir()) {
                 @mkdir($dst . '/' . $iterator->getSubPathName());
             } else {
-                $success = copy($file, $dst . '/' . $iterator->getSubPathName());
-                if ($success) {
-                    if (! $this->silent) {
-                        echo 'copied: ' . $dst . '/' . $iterator->getSubPathName() . PHP_EOL;
-                    }
-                }
+                $this->copyFile($file, $dst . '/' . $iterator->getSubPathName());
             }
         }
     }
@@ -152,5 +148,21 @@ class Installer
         }
         
         rmdir($dir);
+    }
+
+    /**
+     * Copy a single file
+     *
+     * @param $src
+     * @param $dst
+     */
+    private function copyFile($src, $dst)
+    {
+        $success = copy($src, $dst);
+        if ($success) {
+            if (!$this->silent) {
+                echo 'copied: ' . $dst . PHP_EOL;
+            }
+        }
     }
 }

@@ -235,6 +235,9 @@ switch (ENVIRONMENT)
 	// Path to the tests directory
 	define('TESTPATH', __DIR__);
 
+	// Path to ci-phpunit-test
+	define('CI_PHPUNIT_TEST_PATH', TESTPATH . DIRECTORY_SEPARATOR . '../vendor/kenjis/ci-phpunit-test');
+
 	// The PHP file extension
 	define('EXT', '.php');
 
@@ -363,7 +366,7 @@ MonkeyPatchManager::init([
  *  Added for ci-phpunit-test
  * -------------------------------------------------------------------
  */
-require __DIR__ . '/_ci_phpunit_test/CIPHPUnitTest.php';
+require CI_PHPUNIT_TEST_PATH . '/application/tests/_ci_phpunit_test/CIPHPUnitTest.php';
 CIPHPUnitTest::init();
 /*
  * Or you can set directories for autoloading
