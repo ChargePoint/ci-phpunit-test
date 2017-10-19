@@ -904,26 +904,6 @@ class CI_Input {
 		return is_cli();
 	}
 
-	// --------------------------------------------------------------------
-
-	/**
-	 * Get Request Method
-	 *
-	 * Return the request method
-	 *
-	 * @param	bool	$upper	Whether to return in upper or lower case
-	 *				(default: FALSE)
-	 * @return 	string
-	 *
-	 * @codeCoverageIgnore
-	 */
-	public function method($upper = FALSE)
-	{
-		return ($upper)
-			? strtoupper($this->server('REQUEST_METHOD'))
-			: strtolower($this->server('REQUEST_METHOD'));
-	}
-
 	// ------------------------------------------------------------------------
 
 	/**
