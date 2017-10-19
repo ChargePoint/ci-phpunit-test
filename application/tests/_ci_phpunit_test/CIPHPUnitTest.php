@@ -35,14 +35,6 @@ class CIPHPUnitTest
 		// Load autoloader for ci-phpunit-test
 		require __DIR__ . '/autoloader.php';
 
-		require TESTPATH . '/TestCase.php';
-
-		$db_test_case_file = APPPATH . '/tests/DbTestCase.php';
-		if (is_readable($db_test_case_file))
-		{
-			require $db_test_case_file;
-		}
-
 		// Replace a few Common functions
 		require __DIR__ . '/replacing/core/Common.php';
 		require BASEPATH . 'core/Common.php';
