@@ -25,7 +25,7 @@ class Installer
     {
         $this->recursiveCopy(
             dirname(__FILE__) . '/application/tests',
-            $this->base_dir . $app . '/' . static::TEST_FOLDER
+            $this->base_dir . '/' . static::TEST_FOLDER
         );
         $this->fixPath($app);
     }
@@ -35,7 +35,7 @@ class Installer
      */
     private function fixPath($app)
     {
-        $file = $this->base_dir . $app . '/' . static::TEST_FOLDER . '/Bootstrap.php';
+        $file = $this->base_dir . '/' . static::TEST_FOLDER . '/Bootstrap.php';
         $contents = file_get_contents($file);
         
         if (! file_exists($this->base_dir . 'system')) {
@@ -92,9 +92,9 @@ class Installer
         file_put_contents($file, $contents);
     }
 
-    public function update($app = 'application')
+    public function update()
     {
-        $target_dir = $this->base_dir . $app . '/' . static::TEST_FOLDER . '/_ci_phpunit_test';
+        $target_dir = $this->base_dir . '/' . static::TEST_FOLDER . '/_ci_phpunit_test';
         $this->recursiveUnlink($target_dir);
         $this->recursiveCopy(
             dirname(__FILE__) . '/application/tests/_ci_phpunit_test',

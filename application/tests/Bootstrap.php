@@ -118,7 +118,7 @@ switch (ENVIRONMENT)
  *
  * NO TRAILING SLASH!
  */
-	$application_folder = '../../application';
+	$application_folder = '../application';
 
 /*
  *---------------------------------------------------------------
@@ -231,6 +231,9 @@ switch (ENVIRONMENT)
  */
 	// The name of THIS file
 	define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
+
+	// Path to the tests directory
+	define('TESTPATH', __DIR__);
 
 	// The PHP file extension
 	define('EXT', '.php');

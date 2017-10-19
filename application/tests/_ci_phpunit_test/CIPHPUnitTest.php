@@ -35,7 +35,7 @@ class CIPHPUnitTest
 		// Load autoloader for ci-phpunit-test
 		require __DIR__ . '/autoloader.php';
 
-		require APPPATH . '/tests/TestCase.php';
+		require TESTPATH . '/TestCase.php';
 
 		$db_test_case_file = APPPATH . '/tests/DbTestCase.php';
 		if (is_readable($db_test_case_file))
