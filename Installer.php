@@ -13,17 +13,19 @@ class Installer
     const TEST_FOLDER = 'tests';
 
     private $silent = false;
+    private $base_dir;
 
     public function __construct($silent = false)
     {
         $this->silent = $silent;
+        $this->base_dir = dirname(__FILE__) . '/../../../';
     }
 
     public function install($app = 'application')
     {
         $this->recursiveCopy(
             dirname(__FILE__) . '/application/tests',
-            $app . '/' . static::TEST_FOLDER
+            $this->base_dir . $app . '/' . static::TEST_FOLDER
         );
         $this->fixPath($app);
     }
@@ -31,13 +33,13 @@ class Installer
     /**
      * Fix paths in Bootstrap.php
      */
-    private function fixPath($app = 'application')
+    private function fixPath($app)
     {
-        $file = $app . '/' . static::TEST_FOLDER . '/Bootstrap.php';
+        $file = $this->base_dir . $app . '/' . static::TEST_FOLDER . '/Bootstrap.php';
         $contents = file_get_contents($file);
         
-        if (! file_exists('system')) {
-            if (file_exists('vendor/codeigniter/framework/system')) {
+        if (! file_exists($this->base_dir . 'system')) {
+            if (file_exists($this->base_dir . 'vendor/codeigniter/framework/system')) {
                 $contents = str_replace(
                     '$system_path = \'../../system\';',
                     '$system_path = \'../../vendor/codeigniter/framework/system\';',
@@ -48,8 +50,8 @@ class Installer
             }
         }
         
-        if (! file_exists('index.php')) {
-            if (file_exists('public/index.php')) {
+        if (! file_exists($this->base_dir . 'index.php')) {
+            if (file_exists($this->base_dir . 'public/index.php')) {
                 // CodeIgniter 3.0.6 and after
                 $contents = str_replace(
                     "define('FCPATH', realpath(dirname(__FILE__).'/../..').DIRECTORY_SEPARATOR);",
@@ -62,7 +64,7 @@ class Installer
                     "define('FCPATH', realpath(dirname(__FILE__).'/../../public').'/');",
                     $contents
                 );
-            } elseif (file_exists($app . '/public/index.php')) {
+            } elseif (file_exists($this->base_dir . $app . '/public/index.php')) {
                 // CodeIgniter 3.0.6 and after
                 $contents = str_replace(
                     "define('FCPATH', realpath(dirname(__FILE__).'/../..').DIRECTORY_SEPARATOR);",
@@ -82,7 +84,7 @@ class Installer
                         $contents
                     );
                 }
-            } else if (! file_exists('../index.php')) {
+            } else if (! file_exists($this->base_dir . '../index.php')) {
                 throw new Exception('Can\'t find "index.php".');
             }
         }
@@ -92,7 +94,7 @@ class Installer
 
     public function update($app = 'application')
     {
-        $target_dir = $app . '/' . static::TEST_FOLDER . '/_ci_phpunit_test';
+        $target_dir = $this->base_dir . $app . '/' . static::TEST_FOLDER . '/_ci_phpunit_test';
         $this->recursiveUnlink($target_dir);
         $this->recursiveCopy(
             dirname(__FILE__) . '/application/tests/_ci_phpunit_test',
