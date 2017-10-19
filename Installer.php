@@ -82,7 +82,7 @@ class Installer
                         $contents
                     );
                 }
-            } else {
+            } else if (! file_exists('../index.php')) {
                 throw new Exception('Can\'t find "index.php".');
             }
         }
