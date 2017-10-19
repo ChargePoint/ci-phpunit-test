@@ -232,6 +232,9 @@ switch (ENVIRONMENT)
 	// The name of THIS file
 	define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 
+	// The PHP file extension
+	define('EXT', '.php');
+
 	// Path to the system directory
 	define('BASEPATH', $system_path);
 
