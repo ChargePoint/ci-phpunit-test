@@ -326,6 +326,12 @@ class CIPHPUnitTestRequest
 			new CI();
 		}
 		$controller = new $class;
+
+		// Create controller
+		if (CIPHPUnitTest::wiredesignzHmvcInstalled()) {
+			CI::$APP = $controller;
+		}
+
 		$CI =& get_instance();
 
 		// Set CodeIgniter instance to TestCase
